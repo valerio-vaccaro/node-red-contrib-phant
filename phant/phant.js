@@ -27,15 +27,15 @@ function PhantClient(n) {
 
     var msg = {};
     var publicKey;
-	var privateKey;
-	var deleteKey;
+	  var privateKey;
+	  var deleteKey;
     var node = this;
 
 
     // Get varables from the node
     this.publicKey = n.publicKey;
     this.privateKey = n.privateKey;
-	this.deleteKey = n.deleteKey;
+	  this.deleteKey = n.deleteKey;
 
     var streamd = {
         manageUrl: "https://data.sparkfun.com/streams/"+this.publicKey,
@@ -73,4 +73,4 @@ function PhantClient(n) {
 
 // Register the node by name. This must be called before overriding any of the
 // Node functions.
-RED.nodes.registerType("phant", PhantClient);
+RED.nodes.registerType("phantClient", PhantClient);
