@@ -1,6 +1,6 @@
 {
     "name"         : "node-red-contrib-phant",
-    "version"      : "0.0.4",
+    "version"      : "0.0.5",
     "description"  : "phant-client node for node-red",
     "author"       : "Valerio Vaccaro <valerio.vaccaro@gmail.com>",
     "dependencies": {
