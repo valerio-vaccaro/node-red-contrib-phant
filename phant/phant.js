@@ -52,15 +52,15 @@ function PhantClient(n) {
     this.on("input", function(msg){
         phant.connect(streamd, function(error, streamd) {
             if (error) {
-                //this.status({fill:"red",shape:"dot",text:"Error in connection"});
+                node.status({fill:"red",shape:"dot",text:"Error in connection"});
             } else {
-                //this.status({fill:"green",shape:"dot",text:"Connected"});
+                node.status({fill:"green",shape:"dot",text:"Connected"});
                 //phant.save("stream.json", streamd)
                 phant.add(streamd, msg.payload , function(error, rd) {
-                    /*if (error == null)
-                         this.status({fill:"green",shape:"dot",text:"Published"});
+                    if (error == null)
+                         node.status({fill:"green",shape:"dot",text:"Published"});
                     else
-                        this.status({fill:"red",shape:"dot",text:error});*/
+                        node.status({fill:"red",shape:"dot",text:error});
                 })
             }
         })
