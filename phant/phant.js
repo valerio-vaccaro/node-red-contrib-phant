@@ -17,60 +17,80 @@
  * limitations under the License.
  **/
 
-var RED = require(process.env.NODE_RED_HOME+"/red/red");
+module.exports = function(RED) {
+  var Phant = require('phant-client').Phant
+  var phant = new Phant()
 
-var Phant = require('phant-client').Phant
-var phant = new Phant()
-
-function PhantClient(n) {
-    RED.nodes.createNode(this,n);
+  function PhantClient(n) {
+    RED.nodes.createNode(this, n);
 
     var msg = {};
     var publicKey;
-	  var privateKey;
-	  var deleteKey;
+    var privateKey;
+    var deleteKey;
     var node = this;
 
 
     // Get varables from the node
     this.publicKey = n.publicKey;
     this.privateKey = n.privateKey;
-	  this.deleteKey = n.deleteKey;
+    this.deleteKey = n.deleteKey;
 
     var streamd = {
-        manageUrl: "https://data.sparkfun.com/streams/"+this.publicKey,
-        outputUrl: "https://data.sparkfun.com/output/"+this.publicKey,
-        inputUrl: "https://data.sparkfun.com/input/"+this.publicKey,
-        publicKey: this.publicKey,
-        privateKey: this.privateKey,
-        deleteKey: this.deleteKey
+      manageUrl: "https://data.sparkfun.com/streams/" + this.publicKey,
+      outputUrl: "https://data.sparkfun.com/output/" + this.publicKey,
+      inputUrl: "https://data.sparkfun.com/input/" + this.publicKey,
+      publicKey: this.publicKey,
+      privateKey: this.privateKey,
+      deleteKey: this.deleteKey
     }
 
     // Status icon
-    this.status({fill:"grey",shape:"dot",text:"---"});
+    this.status({
+      fill: "grey",
+      shape: "dot",
+      text: "---"
+    });
 
-    this.on("input", function(msg){
-        phant.connect(streamd, function(error, streamd) {
-            if (error) {
-                node.status({fill:"red",shape:"dot",text:"Error in connection"});
-            } else {
-                node.status({fill:"green",shape:"dot",text:"Connected"});
-                //phant.save("stream.json", streamd)
-                phant.add(streamd, msg.payload , function(error, rd) {
-                    if (error == null)
-                         node.status({fill:"green",shape:"dot",text:"Published"});
-                    else
-                        node.status({fill:"red",shape:"dot",text:error});
-                })
-            }
-        })
+    this.on("input", function(msg) {
+      phant.connect(streamd, function(error, streamd) {
+        if (error) {
+          node.status({
+            fill: "red",
+            shape: "dot",
+            text: "Error in connection"
+          });
+        } else {
+          node.status({
+            fill: "green",
+            shape: "dot",
+            text: "Connected"
+          });
+          //phant.save("stream.json", streamd)
+          phant.add(streamd, msg.payload, function(error, rd) {
+            if (error == null)
+              node.status({
+                fill: "green",
+                shape: "dot",
+                text: "Published"
+              });
+            else
+              node.status({
+                fill: "red",
+                shape: "dot",
+                text: error
+              });
+          })
+        }
+      })
     });
 
     this.on("close", function() {
 
     });
-}
+  }
 
-// Register the node by name. This must be called before overriding any of the
-// Node functions.
-RED.nodes.registerType("phantClient", PhantClient);
+  // Register the node by name. This must be called before overriding any of the
+  // Node functions.
+  RED.nodes.registerType("phantClient", PhantClient);
+}
